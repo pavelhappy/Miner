@@ -1,6 +1,8 @@
 package Minesweeper;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.swing.*;
 import java.util.Random;
@@ -27,6 +29,9 @@ public class Minesweeper extends JFrame
     private Image imgEmptyCell;
     private Image imgMineCell;
 
+    public int tile[] = new int[ROWS*COLS];
+    public int rowSelected;
+    public int colSelected;
 
     public Minesweeper()
     {
@@ -34,6 +39,10 @@ public class Minesweeper extends JFrame
         ImageIcon iconEmpty = null;
         ImageIcon iconMine = null;
 
+        for (int i = 0; i < tile.length; i++)
+        {
+
+        }
         URL imgURL = getClass().getClassLoader().getResource(closedCellFilename);
         if (imgURL != null) {
             iconClosed = new ImageIcon(imgURL);
@@ -57,9 +66,23 @@ public class Minesweeper extends JFrame
             System.err.println("Couldn't find file: " + mineCellFilename);
         }
         imgMineCell = iconMine.getImage();
-
+        tile[20]=1;
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_SIZEX, CANVAS_SIZEY));
+
+        canvas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+                // Get the row and column clicked
+                rowSelected = mouseY / CELL_SIZE;
+                colSelected = mouseX / CELL_SIZE;
+                repaint();
+
+            }
+        });
+
         setContentPane(canvas);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
@@ -78,9 +101,19 @@ public class Minesweeper extends JFrame
 
             for (int row = 0; row < ROWS; ++row) {
                 for (int col = 0; col < COLS; ++col) {
-                    g.drawImage(imgClosedCell,
-                            CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                            IMAGE_SIZE, IMAGE_SIZE, null);
+                    if ((tile[rowSelected*COLS+colSelected]==1)&&((rowSelected*COLS+colSelected)==(row*COLS+col)))
+                    {
+                        g.drawImage(imgMineCell,
+                                CELL_SIZE * colSelected + PADDING, CELL_SIZE * rowSelected + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else
+                    {
+
+                        g.drawImage(imgClosedCell,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
                 }
             }
 
@@ -90,10 +123,19 @@ public class Minesweeper extends JFrame
             for (int i = 0; i < ROWS; i++) {
                 g.fill3DRect(0, CELL_SIZE*i - 2, CELL_SIZE * COLS, 4, true);
             }
+
+
         }
 
 
     }
+
+    public void Logic(int row, int col)
+    {
+
+        return;
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable()
