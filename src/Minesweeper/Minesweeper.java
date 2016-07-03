@@ -22,17 +22,17 @@ public class Minesweeper extends JFrame
     Random ranrow = new Random();
     Random rancol = new Random();
 
-    private String closedCellFilename = "Minesweeper/Resources/closed.png";
-    private String emptyCellFilename = "Minesweeper/Resources/empty.png";
-    private String mineCellFilename = "Minesweeper/Resources/mine.png";
-    private String numberOneFilename = "Minesweeper/Resources/1.png";
-    private String numberTwoFilename = "Minesweeper/Resources/2.png";
-    private String numberThreeFilename = "Minesweeper/Resources/3.png";
-    private String numberFourFilename = "Minesweeper/Resources/4.png";
-    private String numberFiveFilename = "Minesweeper/Resources/5.png";
-    private String numberSixFilename = "Minesweeper/Resources/6.png";
-    private String numberSevenFilename = "Minesweeper/Resources/7.png";
-    private String numberEightFilename = "Minesweeper/Resources/8.png";
+    private final static String closedCellFilename = "Minesweeper/Resources/closed.png";
+    private final static String emptyCellFilename = "Minesweeper/Resources/empty.png";
+    private final static String mineCellFilename = "Minesweeper/Resources/mine.png";
+    private final static String numberOneFilename = "Minesweeper/Resources/1.png";
+    private final static String numberTwoFilename = "Minesweeper/Resources/2.png";
+    private final static String numberThreeFilename = "Minesweeper/Resources/3.png";
+    private final static String numberFourFilename = "Minesweeper/Resources/4.png";
+    private final static String numberFiveFilename = "Minesweeper/Resources/5.png";
+    private final static String numberSixFilename = "Minesweeper/Resources/6.png";
+    private final static String numberSevenFilename = "Minesweeper/Resources/7.png";
+    private final static String numberEightFilename = "Minesweeper/Resources/8.png";
 
 
     private Image imgClosedCell;
@@ -51,15 +51,7 @@ public class Minesweeper extends JFrame
     public int tile[][] = new int[ROWS][COLS];
     public int rowSelected;
     public int colSelected;
-
-    /*public int cellLeftUp = (rowSelected-1)*COLS+(colSelected-1);
-    public int cellUp = (rowSelected-1)*COLS+colSelected;
-    public int cellRightUp = (rowSelected-1)*COLS+(colSelected+1);
-    public int cellRight = rowSelected*COLS+(colSelected+1);
-    public int cellRightDown = (rowSelected+1)*COLS+(colSelected+1);
-    public int cellDown = (rowSelected+1)*COLS+colSelected;
-    public int cellLeftDown = (rowSelected+1)*COLS+(colSelected-1);
-    public int cellLeft = rowSelected*COLS+(colSelected-1);*/
+    
 
     public Minesweeper()
     {
