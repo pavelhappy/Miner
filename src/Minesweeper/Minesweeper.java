@@ -16,33 +16,66 @@ public class Minesweeper extends JFrame
     public static final int CELL_SIZE = IMAGE_SIZE + 2 * PADDING;
     public static final int CANVAS_SIZEX = CELL_SIZE * COLS;
     public static final int CANVAS_SIZEY = CELL_SIZE * ROWS;
+    public static final int BOMBS = 7;
 
     private DrawCanvas canvas;
-    private Random random = new Random();
+    Random ranrow = new Random();
+    Random rancol = new Random();
 
     private String closedCellFilename = "Minesweeper/Resources/closed.png";
     private String emptyCellFilename = "Minesweeper/Resources/empty.png";
     private String mineCellFilename = "Minesweeper/Resources/mine.png";
+    private String numberOneFilename = "Minesweeper/Resources/1.png";
+    private String numberTwoFilename = "Minesweeper/Resources/2.png";
+    private String numberThreeFilename = "Minesweeper/Resources/3.png";
+    private String numberFourFilename = "Minesweeper/Resources/4.png";
+    private String numberFiveFilename = "Minesweeper/Resources/5.png";
+    private String numberSixFilename = "Minesweeper/Resources/6.png";
+    private String numberSevenFilename = "Minesweeper/Resources/7.png";
+    private String numberEightFilename = "Minesweeper/Resources/8.png";
 
 
     private Image imgClosedCell;
     private Image imgEmptyCell;
     private Image imgMineCell;
+    private Image imgNumberOne;
+    private Image imgNumberTwo;
+    private Image imgNumberThree;
+    private Image imgNumberFour;
+    private Image imgNumberFive;
+    private Image imgNumberSix;
+    private Image imgNumberSeven;
+    private Image imgNumberEight;
 
-    public int tile[] = new int[ROWS*COLS];
+    public int mines[][] = new int[ROWS][COLS];
+    public int tile[][] = new int[ROWS][COLS];
     public int rowSelected;
     public int colSelected;
+
+    /*public int cellLeftUp = (rowSelected-1)*COLS+(colSelected-1);
+    public int cellUp = (rowSelected-1)*COLS+colSelected;
+    public int cellRightUp = (rowSelected-1)*COLS+(colSelected+1);
+    public int cellRight = rowSelected*COLS+(colSelected+1);
+    public int cellRightDown = (rowSelected+1)*COLS+(colSelected+1);
+    public int cellDown = (rowSelected+1)*COLS+colSelected;
+    public int cellLeftDown = (rowSelected+1)*COLS+(colSelected-1);
+    public int cellLeft = rowSelected*COLS+(colSelected-1);*/
 
     public Minesweeper()
     {
         ImageIcon iconClosed = null;
         ImageIcon iconEmpty = null;
         ImageIcon iconMine = null;
+        ImageIcon iconNumberOne = null;
+        ImageIcon iconNumberTwo = null;
+        ImageIcon iconNumberThree = null;
+        ImageIcon iconNumberFour = null;
+        ImageIcon iconNumberFive = null;
+        ImageIcon iconNumberSix = null;
+        ImageIcon iconNumberSeven = null;
+        ImageIcon iconNumberEight = null;
 
-        for (int i = 0; i < tile.length; i++)
-        {
 
-        }
         URL imgURL = getClass().getClassLoader().getResource(closedCellFilename);
         if (imgURL != null) {
             iconClosed = new ImageIcon(imgURL);
@@ -66,19 +99,82 @@ public class Minesweeper extends JFrame
             System.err.println("Couldn't find file: " + mineCellFilename);
         }
         imgMineCell = iconMine.getImage();
-        tile[20]=1;
+
+        imgURL = getClass().getClassLoader().getResource(numberOneFilename);
+        if (imgURL != null) {
+            iconNumberOne = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberOneFilename);
+        }
+        imgNumberOne = iconNumberOne.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberTwoFilename);
+        if (imgURL != null) {
+            iconNumberTwo = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberTwoFilename);
+        }
+        imgNumberTwo = iconNumberTwo.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberThreeFilename);
+        if (imgURL != null) {
+            iconNumberThree = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberThreeFilename);
+        }
+        imgNumberThree = iconNumberThree.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberFourFilename);
+        if (imgURL != null) {
+            iconNumberFour = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberFourFilename);
+        }
+        imgNumberFour = iconNumberFour.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberFiveFilename);
+        if (imgURL != null) {
+            iconNumberFive = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberFiveFilename);
+        }
+        imgNumberFive = iconNumberFive.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberSixFilename);
+        if (imgURL != null) {
+            iconNumberSix = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberSixFilename);
+        }
+        imgNumberSix = iconNumberSix.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberSevenFilename);
+        if (imgURL != null) {
+            iconNumberSeven = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberSevenFilename);
+        }
+        imgNumberSeven = iconNumberSeven.getImage();
+
+        imgURL = getClass().getClassLoader().getResource(numberEightFilename);
+        if (imgURL != null) {
+            iconNumberEight = new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + numberEightFilename);
+        }
+        imgNumberEight = iconNumberEight.getImage();
+
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_SIZEX, CANVAS_SIZEY));
-
+        StartGame();
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-                // Get the row and column clicked
                 rowSelected = mouseY / CELL_SIZE;
                 colSelected = mouseX / CELL_SIZE;
-                repaint();
+                Logic(rowSelected, colSelected);
 
             }
         });
@@ -99,21 +195,76 @@ public class Minesweeper extends JFrame
             super.paintComponent(g);
             setBackground(Color.WHITE);
 
-            for (int row = 0; row < ROWS; ++row) {
-                for (int col = 0; col < COLS; ++col) {
-                    if ((tile[rowSelected*COLS+colSelected]==1)&&((rowSelected*COLS+colSelected)==(row*COLS+col)))
+            for (int row = 0; row < ROWS; row++) {
+                for (int col = 0; col < COLS; col++) {
+                    if (tile[row][col]==10)
                     {
-                        g.drawImage(imgMineCell,
-                                CELL_SIZE * colSelected + PADDING, CELL_SIZE * rowSelected + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else
-                    {
-
                         g.drawImage(imgClosedCell,
                                 CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
                                 IMAGE_SIZE, IMAGE_SIZE, null);
                     }
+                    else if (tile[row][col]==9)
+                    {
+                        g.drawImage(imgMineCell,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==8)
+                    {
+                        g.drawImage(imgNumberEight,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==7)
+                    {
+                        g.drawImage(imgNumberSeven,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==6)
+                    {
+                        g.drawImage(imgNumberSix,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==5)
+                    {
+                        g.drawImage(imgNumberFive,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==4)
+                    {
+                        g.drawImage(imgNumberFour,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==3)
+                    {
+                        g.drawImage(imgNumberThree,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==2)
+                    {
+                        g.drawImage(imgNumberTwo,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+                    else if (tile[row][col]==1)
+                    {
+                        g.drawImage(imgNumberOne,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+
+                    else if (tile[row][col]==0)
+                    {
+                        g.drawImage(imgEmptyCell,
+                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
+                                IMAGE_SIZE, IMAGE_SIZE, null);
+                    }
+
                 }
             }
 
@@ -123,17 +274,74 @@ public class Minesweeper extends JFrame
             for (int i = 0; i < ROWS; i++) {
                 g.fill3DRect(0, CELL_SIZE*i - 2, CELL_SIZE * COLS, 4, true);
             }
-
-
         }
-
-
     }
 
     public void Logic(int row, int col)
     {
+        int n=mines[row][col];
+        if (n ==9)
+        {
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    if (mines[i][j] == 9)
+                    {
+                        tile[i][j]=9;
+                    }
+                }
+            }
+        }
+        tile[row][col]=n;
+        repaint();
+    }
+    private void putBombs()
+    {
 
-        return;
+        for (int i = 0; i < BOMBS;) {
+            int row = ranrow.nextInt(ROWS);
+            int col = rancol.nextInt(COLS);
+
+            if (mines[row][col]!=9)
+            {
+                mines[row][col] = 9;
+                i++;
+            }
+
+
+        }
+    }
+    private int mines(int row, int col) {
+        int k=0;
+        for(int x = -1; x <= 1; x++) {
+            for(int y = -1; y <= 1; y++) {
+                if(((col+x >= 0) & (col+x < COLS)) & ((row+y >= 0) & (row+y < ROWS))) {
+                    if(mines[row+y][col+x] == 9) k++;
+                }
+            }
+        }
+        return k;
+    }
+
+    public void StartGame()
+    {
+        putBombs();
+        for (int i = 1; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (mines[i][j] !=9)
+                {
+                    mines[i][j] = mines(i,j);
+                }
+            }
+        }
+
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+                tile[i][j]=10;
+            }
+        }
+
     }
 
 
