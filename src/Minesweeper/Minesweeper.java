@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.swing.*;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Minesweeper extends JFrame
@@ -51,7 +53,7 @@ public class Minesweeper extends JFrame
     public int tile[][] = new int[ROWS][COLS];
     public int rowSelected;
     public int colSelected;
-    
+
 
     public Minesweeper()
     {
@@ -187,76 +189,24 @@ public class Minesweeper extends JFrame
             super.paintComponent(g);
             setBackground(Color.WHITE);
 
+            Map<Integer, Image> imgName = new HashMap <Integer, Image>();
+            imgName.put(0,imgEmptyCell);
+            imgName.put(1,imgNumberOne);
+            imgName.put(2,imgNumberTwo);
+            imgName.put(3,imgNumberThree);
+            imgName.put(4,imgNumberFour);
+            imgName.put(5,imgNumberFive);
+            imgName.put(6,imgNumberSix);
+            imgName.put(7,imgNumberSeven);
+            imgName.put(8,imgNumberEight);
+            imgName.put(9,imgMineCell);
+            imgName.put(10,imgClosedCell);
+
             for (int row = 0; row < ROWS; row++) {
                 for (int col = 0; col < COLS; col++) {
-                    if (tile[row][col]==10)
-                    {
-                        g.drawImage(imgClosedCell,
+                        g.drawImage(imgName.get(tile[row][col])  ,
                                 CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
                                 IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==9)
-                    {
-                        g.drawImage(imgMineCell,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==8)
-                    {
-                        g.drawImage(imgNumberEight,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==7)
-                    {
-                        g.drawImage(imgNumberSeven,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==6)
-                    {
-                        g.drawImage(imgNumberSix,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==5)
-                    {
-                        g.drawImage(imgNumberFive,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==4)
-                    {
-                        g.drawImage(imgNumberFour,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==3)
-                    {
-                        g.drawImage(imgNumberThree,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==2)
-                    {
-                        g.drawImage(imgNumberTwo,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-                    else if (tile[row][col]==1)
-                    {
-                        g.drawImage(imgNumberOne,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-
-                    else if (tile[row][col]==0)
-                    {
-                        g.drawImage(imgEmptyCell,
-                                CELL_SIZE * col + PADDING, CELL_SIZE * row + PADDING,
-                                IMAGE_SIZE, IMAGE_SIZE, null);
-                    }
-
                 }
             }
 
@@ -268,6 +218,8 @@ public class Minesweeper extends JFrame
             }
         }
     }
+
+
 
     public void Logic(int row, int col)
     {
