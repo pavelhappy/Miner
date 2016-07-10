@@ -2,7 +2,6 @@ package Minesweeper;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.swing.*;
 import java.util.Map;
@@ -57,106 +56,17 @@ public class Minesweeper extends JFrame
 
     public Minesweeper()
     {
-        ImageIcon iconClosed = null;
-        ImageIcon iconEmpty = null;
-        ImageIcon iconMine = null;
-        ImageIcon iconNumberOne = null;
-        ImageIcon iconNumberTwo = null;
-        ImageIcon iconNumberThree = null;
-        ImageIcon iconNumberFour = null;
-        ImageIcon iconNumberFive = null;
-        ImageIcon iconNumberSix = null;
-        ImageIcon iconNumberSeven = null;
-        ImageIcon iconNumberEight = null;
-
-
-        URL imgURL = getClass().getClassLoader().getResource(closedCellFilename);
-        if (imgURL != null) {
-            iconClosed = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + closedCellFilename);
-        }
-        imgClosedCell = iconClosed.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(emptyCellFilename);
-        if (imgURL != null) {
-            iconEmpty = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + emptyCellFilename);
-        }
-        imgEmptyCell = iconEmpty.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(mineCellFilename);
-        if (imgURL != null) {
-            iconMine = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + mineCellFilename);
-        }
-        imgMineCell = iconMine.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberOneFilename);
-        if (imgURL != null) {
-            iconNumberOne = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberOneFilename);
-        }
-        imgNumberOne = iconNumberOne.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberTwoFilename);
-        if (imgURL != null) {
-            iconNumberTwo = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberTwoFilename);
-        }
-        imgNumberTwo = iconNumberTwo.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberThreeFilename);
-        if (imgURL != null) {
-            iconNumberThree = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberThreeFilename);
-        }
-        imgNumberThree = iconNumberThree.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberFourFilename);
-        if (imgURL != null) {
-            iconNumberFour = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberFourFilename);
-        }
-        imgNumberFour = iconNumberFour.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberFiveFilename);
-        if (imgURL != null) {
-            iconNumberFive = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberFiveFilename);
-        }
-        imgNumberFive = iconNumberFive.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberSixFilename);
-        if (imgURL != null) {
-            iconNumberSix = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberSixFilename);
-        }
-        imgNumberSix = iconNumberSix.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberSevenFilename);
-        if (imgURL != null) {
-            iconNumberSeven = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberSevenFilename);
-        }
-        imgNumberSeven = iconNumberSeven.getImage();
-
-        imgURL = getClass().getClassLoader().getResource(numberEightFilename);
-        if (imgURL != null) {
-            iconNumberEight = new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + numberEightFilename);
-        }
-        imgNumberEight = iconNumberEight.getImage();
+        imgClosedCell = getImage(closedCellFilename);
+        imgEmptyCell = getImage(emptyCellFilename);
+        imgMineCell = getImage(mineCellFilename);
+        imgNumberOne = getImage(numberOneFilename);
+        imgNumberTwo = getImage(numberTwoFilename);
+        imgNumberThree = getImage(numberThreeFilename);
+        imgNumberFour = getImage(numberFourFilename);
+        imgNumberFive = getImage(numberFiveFilename);
+        imgNumberSix = getImage(numberSixFilename);
+        imgNumberSeven = getImage(numberSevenFilename);
+        imgNumberEight = getImage(numberEightFilename);
 
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_SIZEX, CANVAS_SIZEY));
@@ -180,7 +90,18 @@ public class Minesweeper extends JFrame
         setVisible(true);
 
     }
-
+    private Image getImage(String filename)
+    {
+        URL imgURL = getClass().getClassLoader().getResource(filename);
+        Image image = null;
+        if (imgURL != null) {
+            ImageIcon icon = new ImageIcon(imgURL);
+            image = icon.getImage();
+        } else {
+            System.err.println("Couldn't find file: " + filename);
+        }
+        return image;
+    }
     private class DrawCanvas extends JPanel
     {
         @Override
