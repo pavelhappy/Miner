@@ -52,6 +52,7 @@ public class Minesweeper extends JFrame
     public int tile[][] = new int[ROWS][COLS];
     public int rowSelected;
     public int colSelected;
+    Map<Integer, Image> imgName = new HashMap <Integer, Image>();
 
 
     public Minesweeper()
@@ -67,7 +68,7 @@ public class Minesweeper extends JFrame
         imgNumberSix = getImage(numberSixFilename);
         imgNumberSeven = getImage(numberSevenFilename);
         imgNumberEight = getImage(numberEightFilename);
-
+        createImagesMap();
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_SIZEX, CANVAS_SIZEY));
         StartGame();
@@ -90,6 +91,20 @@ public class Minesweeper extends JFrame
         setVisible(true);
 
     }
+    public void createImagesMap()
+    {
+        imgName.put(0,imgEmptyCell);
+        imgName.put(1,imgNumberOne);
+        imgName.put(2,imgNumberTwo);
+        imgName.put(3,imgNumberThree);
+        imgName.put(4,imgNumberFour);
+        imgName.put(5,imgNumberFive);
+        imgName.put(6,imgNumberSix);
+        imgName.put(7,imgNumberSeven);
+        imgName.put(8,imgNumberEight);
+        imgName.put(9,imgMineCell);
+        imgName.put(10,imgClosedCell);
+    }
     private Image getImage(String filename)
     {
         URL imgURL = getClass().getClassLoader().getResource(filename);
@@ -102,6 +117,7 @@ public class Minesweeper extends JFrame
         }
         return image;
     }
+
     private class DrawCanvas extends JPanel
     {
         @Override
@@ -109,19 +125,6 @@ public class Minesweeper extends JFrame
         {
             super.paintComponent(g);
             setBackground(Color.WHITE);
-
-            Map<Integer, Image> imgName = new HashMap <Integer, Image>();
-            imgName.put(0,imgEmptyCell);
-            imgName.put(1,imgNumberOne);
-            imgName.put(2,imgNumberTwo);
-            imgName.put(3,imgNumberThree);
-            imgName.put(4,imgNumberFour);
-            imgName.put(5,imgNumberFive);
-            imgName.put(6,imgNumberSix);
-            imgName.put(7,imgNumberSeven);
-            imgName.put(8,imgNumberEight);
-            imgName.put(9,imgMineCell);
-            imgName.put(10,imgClosedCell);
 
             for (int row = 0; row < ROWS; row++) {
                 for (int col = 0; col < COLS; col++) {
