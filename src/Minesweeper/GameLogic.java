@@ -1,16 +1,18 @@
 package Minesweeper;
 
 import java.util.Random;
+import java.awt.event.MouseEvent;
 
 public class GameLogic implements LogicInterface{
     int ROWS;
     int COLS;
     int mines[][];
     int tile[][];
-    int BOMBS;
+    int BOMBS=0;
     int clickCount = 0;
     static Random ranrow = new Random();
     static Random rancol = new Random();
+    boolean gameOver = false;
 
     @Override
     public void StartGame(int ROWS, int COLS, int mines[][], int tile[][], int BOMBS)
@@ -92,11 +94,32 @@ public class GameLogic implements LogicInterface{
     }
 
     @Override
-    public void openCell(int row, int col)
+    public void openCell(int row, int col, int key)
     {
+        int k = tile[row][col];
+        if(key == MouseEvent.BUTTON3) {
+            if(k == 10) {
+                tile[row][col] = 11;
+            } else if(k == 11) {
+                tile[row][col] = 10;
+            }
+            return;
+        }
+
+
+        if (gameOver)
+        {
+            StartGame(ROWS, COLS, mines,  tile, 0);
+            gameOver = false;
+            clickCount = 0;
+            ranrow = new Random();
+            rancol = new Random();
+            return;
+        }
         int n=mines[row][col];
         if ((n==9)&& (clickCount == 0)) {
             tile[row][col]=0;
+            mines[row][col]=0;
             for (int i = 0; i < 1;) {
                 int randRow = ranrow.nextInt(ROWS);
                 int randCol = rancol.nextInt(COLS);
@@ -118,6 +141,7 @@ public class GameLogic implements LogicInterface{
                 }
             }
             clickCount++;
+            gameOver = true;
         }
         else if (n==0)
         {

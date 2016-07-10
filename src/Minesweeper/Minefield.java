@@ -21,6 +21,7 @@ public class Minefield extends JFrame implements GraphicsInterface {
     private final static String numberSixFilename = "Minesweeper/Resources/6.png";
     private final static String numberSevenFilename = "Minesweeper/Resources/7.png";
     private final static String numberEightFilename = "Minesweeper/Resources/8.png";
+    private final static String flagCellFilename = "Minesweeper/Resources/flag.png";
 
     public static final int ROWS = 6;
     public static final int COLS = 6;
@@ -50,9 +51,10 @@ public class Minefield extends JFrame implements GraphicsInterface {
             public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
                 int mouseX = e.getX();
                 int mouseY = e.getY();
+                int key = e.getButton();
                 rowSelected = mouseY / CELL_SIZE;
                 colSelected = mouseX / CELL_SIZE;
-                logic.openCell(rowSelected,colSelected);
+                logic.openCell(rowSelected,colSelected, key);
                 repaint();
             }
         });
@@ -93,6 +95,7 @@ public class Minefield extends JFrame implements GraphicsInterface {
         imgName.put(8,getImage(numberEightFilename));
         imgName.put(9,getImage(mineCellFilename));
         imgName.put(10,getImage(closedCellFilename));
+        imgName.put(11,getImage(flagCellFilename));
     }
 
     private class DrawCanvas extends JPanel
