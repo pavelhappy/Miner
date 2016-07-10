@@ -35,19 +35,6 @@ public class Minesweeper extends JFrame
     private final static String numberSevenFilename = "Minesweeper/Resources/7.png";
     private final static String numberEightFilename = "Minesweeper/Resources/8.png";
 
-
-    private Image imgClosedCell;
-    private Image imgEmptyCell;
-    private Image imgMineCell;
-    private Image imgNumberOne;
-    private Image imgNumberTwo;
-    private Image imgNumberThree;
-    private Image imgNumberFour;
-    private Image imgNumberFive;
-    private Image imgNumberSix;
-    private Image imgNumberSeven;
-    private Image imgNumberEight;
-
     public int mines[][] = new int[ROWS][COLS];
     public int tile[][] = new int[ROWS][COLS];
     public int rowSelected;
@@ -57,17 +44,6 @@ public class Minesweeper extends JFrame
 
     public Minesweeper()
     {
-        imgClosedCell = getImage(closedCellFilename);
-        imgEmptyCell = getImage(emptyCellFilename);
-        imgMineCell = getImage(mineCellFilename);
-        imgNumberOne = getImage(numberOneFilename);
-        imgNumberTwo = getImage(numberTwoFilename);
-        imgNumberThree = getImage(numberThreeFilename);
-        imgNumberFour = getImage(numberFourFilename);
-        imgNumberFive = getImage(numberFiveFilename);
-        imgNumberSix = getImage(numberSixFilename);
-        imgNumberSeven = getImage(numberSevenFilename);
-        imgNumberEight = getImage(numberEightFilename);
         createImagesMap();
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_SIZEX, CANVAS_SIZEY));
@@ -93,17 +69,17 @@ public class Minesweeper extends JFrame
     }
     public void createImagesMap()
     {
-        imgName.put(0,imgEmptyCell);
-        imgName.put(1,imgNumberOne);
-        imgName.put(2,imgNumberTwo);
-        imgName.put(3,imgNumberThree);
-        imgName.put(4,imgNumberFour);
-        imgName.put(5,imgNumberFive);
-        imgName.put(6,imgNumberSix);
-        imgName.put(7,imgNumberSeven);
-        imgName.put(8,imgNumberEight);
-        imgName.put(9,imgMineCell);
-        imgName.put(10,imgClosedCell);
+        imgName.put(0,getImage(emptyCellFilename));
+        imgName.put(1,getImage(numberOneFilename));
+        imgName.put(2,getImage(numberTwoFilename));
+        imgName.put(3,getImage(numberThreeFilename));
+        imgName.put(4,getImage(numberFourFilename));
+        imgName.put(5,getImage(numberFiveFilename));
+        imgName.put(6,getImage(numberSixFilename));
+        imgName.put(7,getImage(numberSevenFilename));
+        imgName.put(8,getImage(numberEightFilename));
+        imgName.put(9,getImage(mineCellFilename));
+        imgName.put(10,getImage(closedCellFilename));
     }
     private Image getImage(String filename)
     {
