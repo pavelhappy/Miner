@@ -2,7 +2,7 @@ package Minesweeper;
 
 import java.util.Random;
 
-public class GameLogic{
+public class GameLogic implements LogicInterface{
     int ROWS;
     int COLS;
     int mines[][];
@@ -10,6 +10,8 @@ public class GameLogic{
     int BOMBS;
     static Random ranrow = new Random();
     static Random rancol = new Random();
+
+    @Override
     public void StartGame(int ROWS, int COLS, int mines[][], int tile[][], int BOMBS)
     {
         this.ROWS = ROWS;
@@ -35,8 +37,8 @@ public class GameLogic{
             }
         }
     }
-
-    private void putBombs(int BOMBS)
+    @Override
+    public void putBombs(int BOMBS)
     {
         this.BOMBS = BOMBS;
         for (int i = 0; i < BOMBS;) {
@@ -51,7 +53,8 @@ public class GameLogic{
         }
     }
 
-    private int mines(int row, int col) {
+    @Override
+    public int mines(int row, int col) {
         int k=0;
         for(int x = -1; x <= 1; x++) {
             for(int y = -1; y <= 1; y++) {
@@ -63,6 +66,7 @@ public class GameLogic{
         return k;
     }
 
+    @Override
     public void openCell(int row, int col)
     {
         int n=mines[row][col];
