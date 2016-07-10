@@ -67,6 +67,30 @@ public class GameLogic implements LogicInterface{
         return k;
     }
 
+    public void empty(int row, int col)
+    {
+        for(int x = -1; x <= 1; x++) {
+            for(int y = -1; y <= 1; y++) {
+                int newRow = row + y;
+                int newCol = col + x;
+
+                    if (((newCol >= 0) & (newCol < COLS)) & ((newRow >= 0) & (newRow < ROWS))) {
+                        int num = mines(newRow, newCol);
+                        if (tile[newRow][newCol] != 0) {
+                        if (mines[newRow][newCol] == 0) {
+                            tile[newRow][newCol] = 0;
+                            empty(newRow, newCol);
+                        }
+                            if ((num>=1) && (num<=8))
+                            {
+                                tile[newRow][newCol] = num;
+                            }
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void openCell(int row, int col)
     {
@@ -93,6 +117,11 @@ public class GameLogic implements LogicInterface{
                     }
                 }
             }
+            clickCount++;
+        }
+        else if (n==0)
+        {
+            empty(row, col);
             clickCount++;
         }
         else
